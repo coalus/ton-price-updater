@@ -65,10 +65,10 @@ async function runApp() {
     const channels = await Channel.find();
     for (const channel of channels) {
       console.log('Trying to update ', channel.id, ' description..')
-      const prevText = (await bot.api.getChat(channel.id)).description
-      let newText = text + '\n' + (prevText ?? '')
+      const prevText = (await bot.api.getChat(channel.id)).description?.trim()
+      let newText = (text + '\n' + (prevText ?? '')).trim()
       if (prevText?.startsWith('TON = $')) {
-        newText = text + '\n' + (prevText.split('\n')[1] ?? '')
+        newText = (text + '\n' + (prevText.split('\n')[1] ?? '')).trim()
       }
       console.log('Prev text:')
       console.log(prevText)
