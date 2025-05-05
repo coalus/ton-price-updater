@@ -82,7 +82,7 @@ async function runApp() {
         }
         
     }
-  }, 10000);
+  }, 1000 * 60 * 30); // 30 min
 
   await bot.init();
 
