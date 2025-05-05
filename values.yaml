@@ -1,0 +1,47 @@
+replicas: 1
+
+ingress:
+  enabled: true
+  className: "external"
+  annotations: {}
+  host: support
+  suffix: tonsociety.id
+  hosts:
+    - host: support.tonsociety.id
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources: 
+  limits:
+    cpu: 2
+    memory: 2048Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+container_port: 5000
+
+livenessProbe:
+  httpGet:
+    path: /healthcheck
+    port: http
+  initialDelaySeconds: 60
+  periodSeconds: 30
+readinessProbe:
+  httpGet:
+    path: /healthcheck
+    port: http
+  initialDelaySeconds: 60
+  periodSeconds: 30
+
+deployment:
+  strategy_type: Recreate

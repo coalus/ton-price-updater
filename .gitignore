@@ -1,0 +1,14 @@
+# IDE Settings
+.vscode/
+.idea/
+
+# Dependencies
+node_modules/
+
+# Build
+build/
+dist/
+
+# Miscellaneous
+.DS_STORE
+.env
