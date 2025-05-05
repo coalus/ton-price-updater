@@ -64,12 +64,16 @@ async function runApp() {
     const text = `TON = $${data.price.toFixed(2)}`
     const channels = await Channel.find();
     for (const channel of channels) {
+      console.log('Trying to update ', channel.id, ' description..')
       const prevText = (await bot.api.getChat(channel.id)).description
       let newText = text + '\n' + (prevText ?? '')
       if (prevText?.startsWith('TON = $')) {
         newText = text + '\n' + (prevText.split('\n')[1] ?? '')
       }
-      console.log(prevText, newText)
+      console.log('Prev text:')
+      console.log(prevText)
+      console.log("New text:")
+      console.log(newText)
       if (newText != prevText)
         try {
           await bot.api.setChatDescription(channel.id, newText)
@@ -78,7 +82,7 @@ async function runApp() {
         }
         
     }
-  }, 50000);
+  }, 10000);
 
   await bot.init();
 
