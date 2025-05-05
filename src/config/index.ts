@@ -19,10 +19,7 @@ export const loadConfigFromEnv = (): Config => {
         : 5432,
       user: process.env.POSTGRES_USER ?? "",
       password: process.env.POSTGRES_PASSWORD ?? "",
-      database: process.env.POSTGRES_DB ?? "",
-    },
-    api: {
-      port: Number(process.env.API_PORT),
+      database: process.env.POSTGRES_DB ?? ""
     }
   };
 };

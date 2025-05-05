@@ -65,15 +65,20 @@ async function runApp() {
     const channels = await Channel.find();
     for (const channel of channels) {
       const prevText = (await bot.api.getChat(channel.id)).description
-      console.log(prevText)
       let newText = text + '\n' + (prevText ?? '')
       if (prevText?.startsWith('TON = $')) {
         newText = text + '\n' + (prevText.split('\n')[1] ?? '')
       }
+      console.log(prevText, newText)
       if (newText != prevText)
-        await bot.api.setChatDescription(channel.id, newText)
+        try {
+          await bot.api.setChatDescription(channel.id, newText)
+        } catch (e) {
+          console.log("Error while trying to set new ", channel.id, ' description')
+        }
+        
     }
-  }, 10000);
+  }, 50000);
 
   await bot.init();
 

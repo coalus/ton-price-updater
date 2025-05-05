@@ -11,9 +11,6 @@ export type Config = {
   bot: {
     token: string;
   };
-  api: {
-    port: number;
-  }
   db: DatabaseConfig;
 };
 
