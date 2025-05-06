@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 
-import { Bot, session } from "grammy";
+import { Bot, InputFile, session } from "grammy";
 import { run } from "@grammyjs/runner";
 import { conversations} from "@grammyjs/conversations";
 import { hydrate } from "@grammyjs/hydrate";
@@ -38,6 +38,10 @@ async function runApp() {
     .use(conversations())
     .use(hydrate())
     .use(dbMiddleware.handle.bind(dbMiddleware))
+
+  bot.command('start', async (ctx) => {
+    await ctx.replyWithPhoto(new InputFile('./public/permissions.png'), {caption: "Hey! Add this bot to the admins of your channel/chat and it will start providing an up to date rate of $TON in its description! <b>WARNING: YOU MUST give the bot 'Change Group Info' permissions.</b>", parse_mode: "HTML"});
+  })
 
   bot.on('my_chat_member', async (ctx) => {
     if (ctx.update.my_chat_member.new_chat_member.status == 'administrator' && ctx.update.my_chat_member.new_chat_member.can_change_info) {
