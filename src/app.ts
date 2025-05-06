@@ -40,7 +40,7 @@ async function runApp() {
     .use(dbMiddleware.handle.bind(dbMiddleware))
 
   bot.command('start', async (ctx) => {
-    await ctx.replyWithPhoto(new InputFile('./public/permissions.png'), {caption: "Hey! Add this bot to the admins of your channel/chat and it will start providing an up to date rate of $TON in its description! <b>WARNING: YOU MUST give the bot 'Change Group Info' permissions.</b>", parse_mode: "HTML"});
+    await ctx.replyWithPhoto(new InputFile('./src/public/permissions.png'), {caption: "Hey!\nAdd this bot to the admins of your channel/chat and it will start providing an up to date rate of $TON in its description!\n\n<b>WARNING: YOU MUST give the bot 'Change Group Info' permissions.</b>", parse_mode: "HTML"});
   })
 
   bot.on('my_chat_member', async (ctx) => {
