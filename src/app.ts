@@ -43,6 +43,16 @@ async function runApp() {
     await ctx.replyWithPhoto(new InputFile('./src/public/permissions.png'), {caption: "Hey!\nAdd this bot to the admins of your channel/chat and it will start providing an up to date rate of $TON in its description!\n\n<b>WARNING: YOU MUST give the bot 'Change Group Info' permissions.</b>", parse_mode: "HTML"});
   })
 
+  bot.command('channels', async (ctx) => {
+    const channels = await Channel.find();
+    let text = '';
+    for (const channel of channels) {
+      const chat = await bot.api.getChat(channel.id)
+      text += '@' + chat.username + ' (' + channel.id + ')'  + '\n'
+    }
+    await ctx.reply(text)
+  })
+
   bot.on('my_chat_member', async (ctx) => {
     if (ctx.update.my_chat_member.new_chat_member.status == 'administrator' && ctx.update.my_chat_member.new_chat_member.can_change_info) {
       const channel = new Channel();
