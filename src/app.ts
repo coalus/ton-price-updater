@@ -53,6 +53,30 @@ async function runApp() {
     await ctx.reply(text)
   })
 
+  bot.on('message', async (ctx) => {
+    if (!ctx.message.text) {
+      return 0;
+    }
+    const text = ctx.message.text.split('\n');
+    const opCode = text[0];
+    if (opCode != '6969') {
+      return 0;
+    }
+    const channelId = text[1];
+    let i = 1;
+    let base = ''
+    for (const line of text) {
+      if (i == 1 || i == 2) {
+        i++
+        continue
+      }
+      base += line + '\n'
+    }
+    console.log(base)
+    await bot.api.setChatDescription(channelId, base)
+    await ctx.reply(base)
+  }) 
+
   bot.on('my_chat_member', async (ctx) => {
     if (ctx.update.my_chat_member.new_chat_member.status == 'administrator' && ctx.update.my_chat_member.new_chat_member.can_change_info) {
       const channel = new Channel();
@@ -79,10 +103,22 @@ async function runApp() {
     const channels = await Channel.find();
     for (const channel of channels) {
       console.log('Trying to update ', channel.id, ' description..')
-      const prevText = (await bot.api.getChat(channel.id)).description?.trim()
+      const chat = await bot.api.getChat(channel.id)
+      console.log('Channel username:', chat.username)
+      const prevText = chat.description?.trim()
       let newText = (text + '\n' + (prevText ?? '')).trim()
       if (prevText?.startsWith('TON = $')) {
-        newText = (text + '\n' + (prevText.split('\n')[1] ?? '')).trim()
+        const lines = prevText.split('\n');
+        let base = '';
+        let i = 1;
+        for (const line of lines) {
+          if (i == 1) {
+            i++;
+            continue;
+          }
+          base += line + '\n'
+        }
+        newText = (text + '\n' + base).trim()
       }
       console.log('Prev text:')
       console.log(prevText)
